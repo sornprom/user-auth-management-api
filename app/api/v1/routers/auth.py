@@ -23,4 +23,4 @@ async def login(payload: UserCreate, db: AsyncSession = Depends(get_db)):
     token = await service.login(db, payload.email, payload.password)
     if not token:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    return {"access_token": token}
+    return token
