@@ -13,6 +13,9 @@ async def get_db():
 
 @router.post("/register")
 async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
+    existing_user = await service.repo.get_by_email(db, payload.email)
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
     return await service.register(db, payload.email, payload.password)
 
 @router.post("/login")
